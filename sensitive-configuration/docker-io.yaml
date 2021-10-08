@@ -1,0 +1,12 @@
+apiVersion: kubernetes-client.io/v1
+kind: ExternalSecret
+metadata:
+  name: hello-secret
+  namespace: external-secrets
+spec:
+  backendType: akeyless
+  data:
+    - key: dockerhub
+      name: .dockerconfigjson
+  template:
+    type: kubernetes.io/dockerconfigjson
