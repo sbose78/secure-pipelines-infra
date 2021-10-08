@@ -1,8 +1,8 @@
 apiVersion: kubernetes-client.io/v1
 kind: ExternalSecret
 metadata:
-  name: hello-secret
-  namespace: external-secrets
+  name: dockerio
+  namespace: user-pipelines
 spec:
   backendType: akeyless
   data:
