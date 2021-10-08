@@ -29,7 +29,7 @@ metadata:
 rules:
 - apiGroups: ["kubernetes-client.io"]
   resources: ["externalsecrets"]
-  verbs: ["create","list", "get", "patch"]
+  verbs: ["create","list", "get", "patch", "delete"]
 ---
 ## Rolebinding to create externalsecrets
 kind: RoleBinding
