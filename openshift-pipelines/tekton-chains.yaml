@@ -37,10 +37,11 @@ metadata:
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "devel"
     version: "v0.5.0"
-  annotations:
-    "artifacts.taskrun.format": "tekton-provenance"
-    "artifacts.taskrun.storage": "oci"
-    "transparency.enabled": "true"
+    
+data:
+ "artifacts.taskrun.format": "tekton-provenance"
+ "artifacts.taskrun.storage": "oci"
+ "transparency.enabled": "true"
 
 # The data can be tweaked at install time, it is commented out
 # because these are the default settings.
