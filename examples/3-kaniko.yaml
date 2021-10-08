@@ -1,0 +1,76 @@
+apiVersion: tekton.dev/v1beta1
+kind: ClusterTask
+metadata:
+  annotations:
+  name: kaniko-chains
+spec:
+  description: >-
+    This Task builds a simple Dockerfile with kaniko and pushes to a registry.
+    This Task stores the image name and digest as results, allowing Tekton
+    Chains to pick up that an image was built & sign it.
+  params:
+    - description: Name (reference) of the image to build.
+      name: IMAGE
+      type: string
+    - default: ./Dockerfile
+      description: Path to the Dockerfile to build.
+      name: DOCKERFILE
+      type: string
+    - default: ./
+      description: The build context used by Kaniko.
+      name: CONTEXT
+      type: string
+    - default: ''
+      name: EXTRA_ARGS
+      type: string
+    - default: >-
+        gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+      description: The image on which builds will run (default is v1.5.1)
+      name: BUILDER_IMAGE
+      type: string
+  results:
+    - description: Digest of the image just built.
+      name: IMAGE_DIGEST
+    - description: URL of the image just built.
+      name: IMAGE_URL
+  steps:
+    - image: bash
+      name: add-dockerfile
+      resources: {}
+      script: >
+        set -e
+
+        echo "FROM
+        alpine@sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f"
+        | tee $(params.DOCKERFILE)
+      workingDir: $(workspaces.source.path)
+    - args:
+        - $(params.EXTRA_ARGS)
+        - '--dockerfile=$(params.DOCKERFILE)'
+        - '--context=$(workspaces.source.path)/$(params.CONTEXT)'
+        - '--destination=$(params.IMAGE)'
+        - '--digest-file=$(results.IMAGE_DIGEST.path)'
+      env:
+        - name: DOCKER_CONFIG
+          value: /tekton/home/.docker
+        - name: AWS_ACCESS_KEY_ID
+          value: NOT_SET
+        - name: AWS_SECRET_KEY
+          value: NOT_SET
+      image: $(params.BUILDER_IMAGE)
+      name: build-and-push
+      resources: {}
+      securityContext:
+        runAsUser: 0
+      workingDir: $(workspaces.source.path)
+    - image: bash
+      name: write-url
+      resources: {}
+      script: |
+        set -e
+        echo $(params.IMAGE) | tee $(results.IMAGE_URL.path)
+      securityContext:
+        runAsUser: 0
+  workspaces:
+    - description: Holds the context and Dockerfile
+      name: source
