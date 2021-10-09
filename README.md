@@ -24,7 +24,7 @@ spec:
   project: default
   source:
     path: openshift-pipelines
-    repoURL: https://github.com/sbose78/managed-tekton
+    repoURL: https://github.com/sbose78/secure-pipelines-infra
     targetRevision: HEAD
   syncPolicy:
     automated:
@@ -48,7 +48,7 @@ spec:
   project: default
   source:
     path: examples
-    repoURL: https://github.com/sbose78/managed-tekton
+    repoURL: https://github.com/sbose78/secure-pipelines-infra
     targetRevision: HEAD
   syncPolicy:
     automated:
