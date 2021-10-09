@@ -47,7 +47,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: sensitive-configuration
+    path: user-pipelines
     repoURL: https://github.com/sbose78/managed-tekton
     targetRevision: HEAD
   syncPolicy:
