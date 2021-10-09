@@ -34,20 +34,20 @@ spec:
 
 3. Configure External Secrets to authenticate with akeyless.io. This assumes that you have already setup the credentials in akeyless.io vault to push to docker.io.
 
-4. Setup a Kanino build by setting up the `Task` in the `user-pipelines` namespace
+4. Setup a Kanino build by setting up the `Task` in the `examples` namespace
 
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: user-pipelines
+  name: examples
   namespace: openshift-gitops
 spec:
   destination:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: user-pipelines
+    path: examples
     repoURL: https://github.com/sbose78/managed-tekton
     targetRevision: HEAD
   syncPolicy:
