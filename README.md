@@ -34,13 +34,13 @@ spec:
 
 3. Configure External Secrets to authenticate with akeyless.io. This assumes that you have already setup the credentials in akeyless.io vault to push to docker.io.
 
-4. Sync secret-related manifests to your cluster by creating the following Application CR
+4. Setup a Kanino build by setting up the `Task` in the `user-pipelines` namespace
 
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sensitive-configuration
+  name: user-pipelines
   namespace: openshift-gitops
 spec:
   destination:
