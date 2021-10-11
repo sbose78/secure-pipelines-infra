@@ -25,11 +25,11 @@ Following components would need to work together in the hypothetical managed ser
 
 | Component  | Status |
 | ------------- | ------------- |
-| Shipwright  | TODO  |
 | OpenShift Pipelines  | Installed in-cluster |
+| Tekon Chains | Installed in-cluster |
 | External Secrets | Used with akeyless.io
 | Tekton Results | TODO |
-| Tekon Chains | Installed in-cluster |
+| Shipwright  | TODO  |
 | Rekor | TODO, using https://rekor.sigstore.dev/ for now |
 | Policy Management | TODO 
 
