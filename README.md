@@ -22,8 +22,14 @@ Note, this setup has external dependencies, namely,
 
 ## Components
 
-Following components would need to work together in the hypothetical managed service. 
+### Status
 
+**Status** : Successfully logged in using Github, built an image using the Kaniko Tekton Task, pushed signatures/attestations to Dockerhub and pushed transparency log to https://rekor.sigstore.dev/
+
+
+### Stack
+
+Following components would need to work together in the hypothetical managed service. 
 
 | Component  | Status |
 | ------------- | ------------- |
