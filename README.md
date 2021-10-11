@@ -3,6 +3,8 @@
 What would a secure supply chain in a managed CI/Build service powered by OpenShift Pipelines look like ?
 
 A user of this service would be able to do the following:
+
+* Login with Github based on her membership to the https://github.com/redhat-developer org
 * Build a container image from source, 
 * Push it to an OCI resgistry
 * Sign & attest the image
