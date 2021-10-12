@@ -4,11 +4,10 @@ What would a secure supply chain in a managed CI/Build service powered by OpenSh
 
 A user of this service would be able to do the following:
 
-* Login with Github based on her membership to the https://github.com/redhat-developer org
-* Build a container image from source, 
-* Push it to an OCI resgistry
-* Sign & attest the TaskRun signatures.
-* Upload a transparency log of the build process in a technology-agnostic format
+* Login with Github based on her membership to the https://github.com/redhat-developer org.
+* Build a container image from source and push it to docker.io .
+* Sign and attest the image and push the same to docker.io
+* Upload a transparency log of the build process in a pre-defined format to https://rekor.sigstore.dev/ .
 
 
 This is a GitOps repository of the setup that can be re-created in ~3 minutes on an OpenShift 4.8 cluster. 
