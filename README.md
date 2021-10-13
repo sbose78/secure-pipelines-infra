@@ -42,7 +42,7 @@ Following components would need to work together in the hypothetical managed ser
 
 ## User guide
 
-1. Create a new Project.
+1. Login to https://console-openshift-console.apps.gitops1.devcluster.openshift.com/ and Create a new Project.
 
 2. Create a `Secret` named `my-docker-credentials` with your docker.io credentials
 
