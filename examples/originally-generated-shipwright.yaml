@@ -1,0 +1,160 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: s2i-nodejs-buildrun-vnlrb
+  namespace: sbose
+spec:
+  params:
+    - name: shp-output-image
+      value: 'docker.io/sbose78/kaniko-chains:foogitops1'
+    - name: shp-source-root
+      value: /workspace/source
+    - name: BUILDER_IMAGE
+      value: docker.io/centos/nodejs-10-centos7
+    - name: CONTEXT_DIR
+      value: source-build/
+    - name: shp-source-context
+      value: /workspace/source/source-build
+  serviceAccountName: pipeline
+  taskSpec:
+    params:
+      - default: Dockerfile
+        description: Path to the Dockerfile
+        name: DOCKERFILE
+        type: string
+      - default: .
+        description: The root of the code
+        name: CONTEXT_DIR
+        type: string
+      - description: The URL of the image that the build produces
+        name: shp-output-image
+        type: string
+      - description: The context directory inside the source directory
+        name: shp-source-context
+        type: string
+      - description: The source directory
+        name: shp-source-root
+        type: string
+      - default: docker.io/centos/nodejs-10-centos7
+        description: Image containing the build tools/logic
+        name: BUILDER_IMAGE
+        type: string
+    results:
+      - description: The digest of the image
+        name: shp-image-digest
+      - description: The compressed size of the image
+        name: shp-image-size
+      - description: The commit SHA of the cloned source.
+        name: shp-source-default-commit-sha
+      - description: The author of the last commit of the cloned source.
+        name: shp-source-default-commit-author
+    steps:
+      - args:
+          - '--url'
+          - 'https://github.com/shipwright-io/sample-nodejs'
+          - '--target'
+          - $(params.shp-source-root)
+          - '--result-file-commit-sha'
+          - $(results.shp-source-default-commit-sha.path)
+          - '--result-file-commit-author'
+          - $(results.shp-source-default-commit-author.path)
+        command:
+          - /ko-app/git
+        image: >-
+          quay.io/shipwright/git:v0.6.0@sha256:42ad649c3eeb3cddebbf30f2886f774477f3907fca27a24cfe2947034ee20eec
+        name: source-default
+        resources: {}
+        securityContext:
+          runAsGroup: 1000
+          runAsUser: 1000
+      - command:
+          - /usr/local/bin/s2i
+          - build
+          - $(params.shp-source-context)
+          - $(inputs.params.BUILDER_IMAGE)
+          - '--as-dockerfile'
+          - /gen-source/Dockerfile.gen
+        image: 'quay.io/openshift-pipeline/s2i:nightly'
+        imagePullPolicy: Always
+        name: s2i-build-as-dockerfile
+        resources: {}
+        volumeMounts:
+          - mountPath: /gen-source
+            name: gen-source
+        workingDir: $(params.shp-source-root)
+      - resources: {}
+        name: build-and-push
+        command:
+          - /kaniko/executor
+        env:
+          - name: DOCKER_CONFIG
+            value: /tekton/home/.docker
+          - name: HOME
+            value: /tekton/home
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+              - CHOWN
+              - DAC_OVERRIDE
+              - FOWNER
+              - SETGID
+              - SETUID
+              - SETFCAP
+              - KILL
+          runAsUser: 0
+        volumeMounts:
+          - mountPath: /gen-source
+            name: gen-source
+          - mountPath: /kaniko/oci-image-layout
+            name: layout
+        image: 'gcr.io/kaniko-project/executor:v1.6.0'
+        workingDir: /gen-source
+        args:
+          - '--skip-tls-verify=true'
+          - '--dockerfile=/gen-source/Dockerfile.gen'
+          - '--context=/gen-source'
+          - '--destination=$(params.shp-output-image)'
+          - '--oci-layout-path=/kaniko/oci-image-layout'
+          - '--snapshotMode=redo'
+          - '--push-retry=3'
+      - args:
+          - '-c'
+          - >
+            set -euo pipefail
+
+
+            # Store the image digest
+
+            grep digest /kaniko/oci-image-layout/index.json | sed -E
+            's/.*sha256([^"]*).*/sha256\1/' | tr -d '\n' >
+            "$(results.shp-image-digest.path)"
+
+
+            # Store the image size
+
+            du -b -c /kaniko/oci-image-layout/blobs/sha256/* | tail -1 | sed
+            's/\s*total//' | tr -d '\n' > "$(results.shp-image-size.path)"
+        command:
+          - /bin/bash
+        image: registry.access.redhat.com/ubi8/ubi-minimal
+        name: results
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+          - mountPath: /kaniko/oci-image-layout
+            name: layout
+    volumes:
+      - name: gen-source
+      - name: layout
+    workspaces:
+      - name: source
+  timeout: 1h0m0s
+  workspaces:
+    - emptyDir: {}
+      name: source
