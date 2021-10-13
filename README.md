@@ -33,13 +33,22 @@ Following components would need to work together in the hypothetical managed ser
 | Policy Management | TODO 
 
 
-## Try it
+## User guide
 
 1. Create a new Project.
 
 2. Create a `Secret` named `my-docker-credentials` with your docker.io credentials
 
-3. Link the `Secret` to your `pipeline` service account.
+```
+REGISTRY_SERVER=https://index.docker.io/v1/ REGISTRY_USER=<your_registry_user> REGISTRY_PASSWORD=<your_registry_password>
+kubectl create secret docker-registry push-secret \
+    --docker-server=$REGISTRY_SERVER \
+    --docker-username=$REGISTRY_USER \
+    --docker-password=$REGISTRY_PASSWORD  \
+    --docker-email=<your_email>
+```
+
+3. Link the `Secret` to your `pipeline` service account so that Tekton Chains knows where to push artifact signatures/attestations to.
 
 ```
 oc patch serviceaccount pipeline \
@@ -48,22 +57,69 @@ oc patch serviceaccount pipeline \
 
 4. Proceed to building an image using Shipwright or Tekton
 
+
 ### Shipwright Builds
 
 #### 
 
-Import the following YAML to 
+Define a `Build` by importing the following YAML
+
+```
+---
+apiVersion: shipwright.io/v1alpha1
+kind: Build
+metadata:
+  name: s2i-nodejs-build
+spec:
+  source:
+    url: https://github.com/shipwright-io/sample-nodejs
+    contextDir: source-build/
+  strategy:
+    name: source-to-image
+    kind: ClusterBuildStrategy
+  builder:
+    image: docker.io/centos/nodejs-10-centos7
+  output:
+    image: docker.io/foo/bar
+    credentials:
+      name: my-docker-credentials
+```
+
+Kick-off your first `Build` by creating a `BuildRun`
+
+```
+apiVersion: shipwright.io/v1alpha1
+kind: BuildRun
+metadata:
+  generateName: s2i-nodejs-buildrun-
+spec:
+  buildRef:
+    name: s2i-nodejs-build
+```
+
+And that's it, wait for the BuildRun to complete. You should see an image, a signature and an attestation pushed to your registry.
+
+
+![image](https://user-images.githubusercontent.com/545280/137172847-1827201e-e31a-4f04-ab78-a633149435a5.png)
+
+
 
 ### Tekton Task Builds
 
-1. Link the `Secret` to your `pipeline` service account. This somewhat repititive step will go away when an appropriate kaniko Task is used.
+The above could be accomplished by a Tekton TaskRun as well.
+
+1. Link the `Secret` named `my-docker-credentials` to your `pipeline` service account. This somewhat repititive step will go away when an appropriate Task is used.
 
 ```
 oc patch serviceaccount pipeline \
   -p "{\"Secrets\": [{\"name\": \"my-docker-credentials\"}]}" -n $NAMESPACE
 ```
 
-2. Import the following YAML to build your image. After a successful run, find the image, the corresponding signature and the attestation in DockerHubb.
+2. Import the following YAML to build your image. After a successful run, find the image, the corresponding signature and the attestation in DockerHub : https://raw.githubusercontent.com/sbose78/secure-pipelines-infra/main/examples/generated-shipwright.yaml
+
+Modify the above YAML to replace `IMAGE_URL`'s value with your own.
+
+
 
 ## Installation
 
