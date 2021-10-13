@@ -3,10 +3,11 @@
 What would a secure supply chain in a managed CI/Build service powered by OpenShift Pipelines look like ?
 
 A user of this service would be able to do the following:
-* Build a container image from source, 
-* Push it to an OCI resgistry
-* Sign & attest the image
-* Upload a transparency log of the build process.
+
+* Login with Github based on her membership to the https://github.com/redhat-developer org.
+* Build a container image from source and push it to docker.io .
+* Sign and attest the image and push the same to docker.io
+* Upload a transparency log of the build process in a pre-defined format to https://rekor.sigstore.dev/ .
 
 This is a GitOps repository of the setup that can be re-created in ~3 minutes on an OpenShift 4.8 cluster. 
 
@@ -19,16 +20,22 @@ Note, this setup has external dependencies, namely,
 
 ## Components
 
-Following components would need to work together in the hypothetical managed service. 
+### Status
 
+**Status** : Successfully logged in using Github, built an image using the Kaniko Tekton Task, pushed signatures/attestations to Dockerhub and pushed transparency log to https://rekor.sigstore.dev/
+
+
+### Stack
+
+Following components would need to work together in the hypothetical managed service. 
 
 | Component  | Status |
 | ------------- | ------------- |
-| Shipwright  | TODO  |
 | OpenShift Pipelines  | Installed in-cluster |
+| Tekon Chains | Installed in-cluster |
 | External Secrets | Used with akeyless.io
 | Tekton Results | TODO |
-| Tekon Chains | Installed in-cluster |
+| Shipwright  | Installed in-cluster  |
 | Rekor | TODO, using https://rekor.sigstore.dev/ for now |
 | Policy Management | TODO 
 
