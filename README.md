@@ -22,22 +22,22 @@ Note, this setup has external dependencies, namely,
 
 ### Status
 
-**Status** : Successfully logged in using Github, built an image using the Kaniko Tekton Task, pushed signatures/attestations to Dockerhub and pushed transparency log to https://rekor.sigstore.dev/
+**Status** : Successfully logged in to the [hosted service](https://console-openshift-console.apps.gitops1.devcluster.openshift.com/) using Github, built an image using the Kaniko Tekton Task, pushed signatures/attestations to Dockerhub and pushed transparency log to https://rekor.sigstore.dev/
 
 
 ### Stack
 
 Following components would need to work together in the hypothetical managed service. 
 
-| Component  | Status |
-| ------------- | ------------- |
-| OpenShift Pipelines  | Installed in-cluster |
-| Tekon Chains | Installed in-cluster |
-| External Secrets | Used with akeyless.io
-| Tekton Results | TODO |
-| Shipwright  | Installed in-cluster  |
-| Rekor | TODO, using https://rekor.sigstore.dev/ for now |
-| Policy Management | TODO 
+| Component  | Status | Notes
+| ------------- | ------------- |-----|
+| OpenShift Pipelines  | ✅  | |
+| Tekon Chains | ✅  |  |
+| External Secrets | ✅  | Works with akeyless.io |
+| Tekton Results |  🛑 | TODO |
+| Shipwright  |  ☑️  |  Using a custom image | 
+| Rekor |  ☑️ | Using https://rekor.sigstore.dev/ |
+| Policy Management | 🛑 | TODO  
 
 
 ## User guide
