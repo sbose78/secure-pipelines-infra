@@ -8,7 +8,6 @@ A user of this service would be able to do the following:
 * Sign & attest the image
 * Upload a transparency log of the build process.
 
-
 This is a GitOps repository of the setup that can be re-created in ~3 minutes on an OpenShift 4.8 cluster. 
 
 Note, this setup has external dependencies, namely,
@@ -34,6 +33,37 @@ Following components would need to work together in the hypothetical managed ser
 | Policy Management | TODO 
 
 
+## Try it
+
+1. Create a new Project.
+
+2. Create a `Secret` named `my-docker-credentials` with your docker.io credentials
+
+3. Link the `Secret` to your `pipeline` service account.
+
+```
+oc patch serviceaccount pipeline \
+  -p "{\"imagePullSecrets\": [{\"name\": \"my-docker-credentials\"}]}" -n $NAMESPACE
+```
+
+4. Proceed to building an image using Shipwright or Tekton
+
+### Shipwright Builds
+
+#### 
+
+Import the following YAML to 
+
+### Tekton Task Builds
+
+1. Link the `Secret` to your `pipeline` service account. This somewhat repititive step will go away when an appropriate kaniko Task is used.
+
+```
+oc patch serviceaccount pipeline \
+  -p "{\"Secrets\": [{\"name\": \"my-docker-credentials\"}]}" -n $NAMESPACE
+```
+
+2. Import the following YAML to build your image. After a successful run, find the image, the corresponding signature and the attestation in DockerHubb.
 
 ## Installation
 
