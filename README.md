@@ -85,9 +85,9 @@ spec:
     name: source-to-image
     kind: ClusterBuildStrategy
   builder:
-    image: docker.io/centos/nodejs-10-centos7
+    image: docker.io/centos/nodejs-10-centos7 
   output:
-    image: docker.io/foo/bar
+    image: docker.io/foo/bar <---- MODIFY THIS
     credentials:
       name: my-docker-credentials
 ```
@@ -147,7 +147,7 @@ spec:
   project: default
   source:
     path: openshift-pipelines
-    repoURL: https://github.com/sbose78/secure-pipelines-infra
+    repoURL: https://github.com/sbose78/secure-pipelines-infra 
     targetRevision: HEAD
   syncPolicy:
     automated:
