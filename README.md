@@ -22,7 +22,7 @@ Note, this setup has external dependencies, namely,
 
 ### Status
 
-**Status** : Successfully logged in to the [hosted service](https://console-openshift-console.apps.gitops1.devcluster.openshift.com/) using Github, built an image using the Kaniko Tekton Task, pushed signatures/attestations to Dockerhub and pushed transparency log to https://rekor.sigstore.dev/
+**Status** : Successfully logged in to the [hosted service](https://console-openshift-console.apps.gitops1.devcluster.openshift.com/) using Github, built an image using the Source-to-Image strategy, pushed signatures/attestations to Dockerhub and pushed transparency log to https://rekor.sigstore.dev/
 
 
 ### Stack
