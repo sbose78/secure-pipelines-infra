@@ -42,13 +42,13 @@ Following components would need to work together in the hypothetical managed ser
 
 ## User guide
 
-1. Login to https://console-openshift-console.apps.gitops1.devcluster.openshift.com/ and Create a new Project.
+1. Login to https://console-openshift-console.apps.shbose-pipelines.devcluster.openshift.com/ and Create a new Project.
 
 2. Create a `Secret` named `my-docker-credentials` with your docker.io credentials
 
 ```
 REGISTRY_SERVER=https://index.docker.io/v1/ REGISTRY_USER=<your_registry_user> REGISTRY_PASSWORD=<your_registry_password>
-kubectl create secret docker-registry push-secret \
+kubectl create secret docker-registry my-docker-credentials \
     --docker-server=$REGISTRY_SERVER \
     --docker-username=$REGISTRY_USER \
     --docker-password=$REGISTRY_PASSWORD  \
