@@ -1,0 +1,7 @@
+apiVersion: helm.openshift.io/v1beta1
+kind: HelmChartRepository
+metadata:
+  name: argocd-dev-charts
+spec:
+  connectionConfig:
+    url: https://sbose78.github.io/helm-charts/index.yaml
