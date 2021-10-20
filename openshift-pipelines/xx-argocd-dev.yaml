@@ -1,3 +1,12 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: helmchartrepository-admin
+rules:
+- apiGroups: ["helm.openshift.io"]
+  resources: ["helmchartrepositories"]
+  verbs: ["create","list", "get", "patch","delete"]
+---
 apiVersion: helm.openshift.io/v1beta1
 kind: HelmChartRepository
 metadata:
