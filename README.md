@@ -1,6 +1,6 @@
 # OpenShift Pipelines with Supply Chain Security
 
-What would a secure supply chain in a managed CI/Build service powered by OpenShift Pipelines look like ?
+What would a secure supply chain in a managed CI/Build service powered by OpenShift Pipelines look lik ?
 
 A user of this service would be able to do the following:
 
