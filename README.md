@@ -1,5 +1,5 @@
 # OpenShift Pipelines with Supply Chain Security
-
+ddd
 What would a secure supply chain in a managed CI/Build service powered by OpenShift Pipelines look like ?
 
 A user of this service would be able to do the following:
@@ -22,7 +22,7 @@ Note, this setup has external dependencies, namely,
 
 ### Status
 
-**Status** : Successfully logged in to the [hosted service](https://console-openshift-console.apps.gitops1.devcluster.openshift.com/) using Github, built an image using the Source-to-Image strategy, pushed signatures/attestations to Dockerhub and pushed transparency log to https://rekor.sigstore.dev/
+**Status** : Successfully logged in to the [hosted service](https://console-openshift-console.apps.gitops1.devcluster.openshift.com/) using Github, built an image using the Source-to-Image strategy, pushed signatures/attestations to Dockerhu and pushed transparency log to https://rekor.sigstore.dev/
 
 
 ### Stack
