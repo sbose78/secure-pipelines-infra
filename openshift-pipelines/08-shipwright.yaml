@@ -121,7 +121,7 @@ spec:
       serviceAccountName: shipwright-build-controller
       containers:
         - name: shipwright-build
-          image: docker.io/sbose78/shipwright-scs@sha256:cae58241f8290dd4253483abbdee573ba7ef108f562f28a9fac8ab3cda6c34f9
+          image: docker.io/sbose78/shipwright-scs@sha256:ee9d442517ea94e2ec3200f70f527afd8ed9de53e12ca90de13d6d50b01bd38f
           env:
             - name: WATCH_NAMESPACE
               valueFrom:
