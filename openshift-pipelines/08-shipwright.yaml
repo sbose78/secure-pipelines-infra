@@ -121,7 +121,7 @@ spec:
       serviceAccountName: shipwright-build-controller
       containers:
         - name: shipwright-build
-          image: docker.io/sbose78/shipwright-scs:0.2-webhook
+          image: docker.io/sbose78/shipwright-scs:0.3-webhook
           env:
             - name: WATCH_NAMESPACE
               valueFrom:
