@@ -45,6 +45,15 @@ roleRef:
   kind: ClusterRole
   name: shipwright-triggers
 ---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: pipeline-shipwright
+rules:
+- apiGroups: ["shipwright.io"]
+  resources: ["*"]
+  verbs: ["*"]
+---
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: ClusterTriggerBinding
 metadata:
