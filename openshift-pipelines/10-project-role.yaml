@@ -126,7 +126,7 @@ spec:
           imagePullPolicy: IfNotPresent
           terminationMessagePolicy: File
           image: >-
-            docker.io/sbose78/project-roles-controller@sha256:c0e58f9c29e5ac762573d17fbf96892477be155c9869b299e42b4205788af8c4
+            docker.io/sbose78/project-roles-controller@sha256:a9bc0ca5f9b065be8f7577d5a0facf426a186ea42c669b016a0353717bb66558
           args:
             - '--leader-elect'
       restartPolicy: Always
