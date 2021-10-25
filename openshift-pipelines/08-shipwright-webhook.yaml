@@ -48,7 +48,7 @@ roleRef:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: ClusterTriggerBinding
 metadata:
-  name: shiwpright-executor
+  name: shipwright-executor
 spec:
   params:
     - name: git-revision
