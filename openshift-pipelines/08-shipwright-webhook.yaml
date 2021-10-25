@@ -48,8 +48,7 @@ roleRef:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: ClusterTriggerBinding
 metadata:
-  name: shiwpright-github-webhook
-  namespace: sbose
+  name: shiwpright-executor
 spec:
   params:
     - name: git-revision
