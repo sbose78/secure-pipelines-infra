@@ -121,7 +121,7 @@ spec:
       serviceAccountName: shipwright-build-controller
       containers:
         - name: shipwright-build
-          image: docker.io/sbose78/shipwright-scs@sha256:cbfa8c638cd52911309590bf1e376fee3075e120a8c6a31a0b296b22e4aa6647
+          image: docker.io/sbose78/shipwright-scs@sha256:bc9fe2bec80b2aa3fa7c11d909035b373d8ed764f3bb7f425758e01c5b3e912f
           env:
             - name: WATCH_NAMESPACE
               valueFrom:
@@ -142,7 +142,7 @@ spec:
             - name: MUTATE_IMAGE_CONTAINER_IMAGE
               value: quay.io/shipwright/mutate-image:v0.6.0@sha256:b4af89749dfa2659b1a828b06c17b6d77cb9221abdc52a99795c13ae3cf50753
             - name: BUNDLE_CONTAINER_IMAGE
-              value: quay.io/shipwright/bundle:v0.6.0@sha256:bc9fe2bec80b2aa3fa7c11d909035b373d8ed764f3bb7f425758e01c5b3e912f
+              value: quay.io/shipwright/bundle:v0.6.0@sha256:8677e34c97966921fbf34ba084bc6582c2fdb244afed19aeea51cbc5466dbd1b
           ports:
             - containerPort: 8383
               name: metrics-port
