@@ -1,0 +1,79 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: managed-gitops
+  namespace: appstudio-gitops-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: managed-gitops
+  template:
+    metadata:
+      labels:
+        app: managed-gitops
+        deploymentconfig: managed-gitops
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      containers:
+        - name: managed-gitops
+          image: >-
+            docker.io/sbose78/managed-gitops@sha256:0f732fefd800fa88d3e4df6b461e5f4c7bb1db7c27df751ec7425e8921652777
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: managed-gitops
+  namespace: appstudio-gitops-service
+spec:
+  clusterIP: 172.30.233.134
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  internalTrafficPolicy: Cluster
+  clusterIPs:
+    - 172.30.233.134
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: managed-gitops
+    deploymentconfig: managed-gitops
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: managed-gitops
+  namespace: appstudio-gitops-service
+spec:
+  to:
+    kind: Service
+    name: managed-gitops
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  wildcardPolicy: None
